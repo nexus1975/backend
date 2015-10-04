@@ -1,10 +1,19 @@
 <?php
 class Image extends Eloquent {
+    protected $connection;
+    function __construct() {
+        $this->connection= getenv('OPENSHIFT_MYSQL_DB_HOST') ? 'openshiftmysql' : 'objects_mysql';//'openshiftmysql';        
+    }    
     protected $table = 'images';
-}
+    //public function changeConnection($conn)
+    //{        
+    //    $this->connection = $conn;
+    //}    
+}   
 
 class ImagesController extends \BaseController {
 
+//
 
 	/**
 	 * Display a listing of the resource.
@@ -14,7 +23,7 @@ class ImagesController extends \BaseController {
 	public function index()
 	{
             try {
-                //$res = DB::connection('rmmysql')->select('select id, name, year from budgets');
+                $i = new Image();                
                 $res = Image::all();
 		return Response::json($res);
             } catch (Exception  $e) {
